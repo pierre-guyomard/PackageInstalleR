@@ -31,18 +31,18 @@ Start R, source the script and type “installation(“quit_option”). By defau
 
 Main functions
 
-•	bibliotheque
+•	bibliotheque : 
 Function charged to check the success of installation from each source.
 
-•	verification_package
+•	verification_package : 
 Function which manages overlooking the list of package and output file. If the package is not already installed, this function will call the function installation_package_cran.
 
-•	installation_package_cran
+•	installation_package_cran : 
 Manage the installation from CRAN. If installation which CRAN fails, it calls the function installation_package_BioConductor.
 
-•	installation_package_BioConductor
+•	installation_package_BioConductor : 
 Manage the installation from BioConductor. If installation which BioConductor fails, it calls the function installation_package_GitHub.
 
-•	disponible
+•	disponible : 
 Checks if package is available on BioConductor or GitHub.
 
