@@ -13,6 +13,8 @@ What is PackageInstalleR ?
 
 PackageInstalleR is a script, for R 3.6.1 and further, which installs several packages from several sources (CRAN, BioConductor and GithHub). The input consists in a tsv file in which package name are written in the first column. The output named “installation_output.tsv” contains the name of the package and the source of installation.
 
+The code is available here :  https://github.com/pierre-guyomard/PackageInstalleR/blob/main/PackageInstalleR.r
+
 
 
 How does it work ?
