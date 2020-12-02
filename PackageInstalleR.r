@@ -138,33 +138,31 @@ installation_package_GitHub <- function(package, LOAD_SUCCESS, COMPTEUR_INSTALLA
 	
 	if (length(dispo) != 0 | reposit != "NA" ) { #if there is at least one package and one accessible repository
 	
-	    TOO_MUCH_REPOSITS <- FALSE
+		TOO_MUCH_REPOSITS <- FALSE
      
-	    for (i in 1:length(dispo)) { 
+		for (i in 1:length(dispo)) { 
 		     
-		    if (length(dispo) < 2 & length(reposit) < 2 ) { #if there is not too much repositories and packages
+			if (length(dispo) < 2 & length(reposit) < 2 ) { #if there is not too much repositories and packages
 		     
-                for (k in 1:length(reposit)) { #install all corresponding package
+				for (k in 1:length(reposit)) { #install all corresponding package
 		               
-		            print(paste("log --\ ", package, "\ available on GitHub", sep = ""))
+					print(paste("log --\ ", package, "\ available on GitHub", sep = ""))
 		               
-		            install_github(paste(reposit[k], "/", package, sep =""))
-		                    
-                    }
-		     
+					install_github(paste(reposit[k], "/", package, sep =""))
 				}
+			}
 				
 			if (length(dispo) > 2 | length(reposit) > 2) { #if there is too much repositories or packages
 		          
-		         while (TOO_MUCH_REPOSITS != TRUE) {
+				while (TOO_MUCH_REPOSITS != TRUE) {
 		          
-		            print(paste("log --\ ", package, "\ please precise GitHub repository", sep = ""))
+					print(paste("log --\ ", package, "\ please precise GitHub repository", sep = ""))
 		               
-		            TOO_MUCH_REPOSITS <- TRUE
-		             
+					TOO_MUCH_REPOSITS <- TRUE
+				
 				}
 		          
-		    }
+			}
 			
 		}
                
