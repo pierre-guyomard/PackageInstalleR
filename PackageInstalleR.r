@@ -150,6 +150,7 @@ installation_package_GitHub <- function(package, LOAD_SUCCESS, COMPTEUR_INSTALLA
 		               
 					install_github(paste(reposit[k], "/", package, sep =""))
 				}
+				
 			}
 				
 			if (length(dispo) > 2 | length(reposit) > 2) { #if there is too much repositories or packages
