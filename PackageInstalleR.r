@@ -1,11 +1,13 @@
 ########################################################
 ########################################################
-#PackageInstalleR 1.0
+#PackageInstalleR
 
 # R 3.6.1 and further
 
 #author : Pierre GUYOMARD 15.11.2020
-#piguyomard@outlook.com 
+#piguyomard@outlook.com
+
+#https://github.com/pierre-guyomard/PackageInstalleR/blob/main/PackageInstalleR.r 
 
 #this script is under GNU licence
 ########################################################
@@ -138,32 +140,33 @@ installation_package_GitHub <- function(package, LOAD_SUCCESS, COMPTEUR_INSTALLA
 	
 	if (length(dispo) != 0 | reposit != "NA" ) { #if there is at least one package and one accessible repository
 	
-		TOO_MUCH_REPOSITS <- FALSE
+	    TOO_MUCH_REPOSITS <- FALSE
      
-		for (i in 1:length(dispo)) { 
+	    for (i in 1:length(dispo)) { 
 		     
-			if (length(dispo) < 2 & length(reposit) < 2 ) { #if there is not too much repositories and packages
+		    if (length(dispo) < 2 & length(reposit) < 2 ) { #if there is not too much repositories and packages
 		     
-				for (k in 1:length(reposit)) { #install all corresponding package
+                for (k in 1:length(reposit)) { #install all corresponding package
 		               
-					print(paste("log --\ ", package, "\ available on GitHub", sep = ""))
+		            print(paste("log --\ ", package, "\ available on GitHub", sep = ""))
 		               
-					install_github(paste(reposit[k], "/", package, sep =""))
+		            install_github(paste(reposit[k], "/", package, sep =""))
+		                    
+                    }
+		     
 				}
-				
-			}
 				
 			if (length(dispo) > 2 | length(reposit) > 2) { #if there is too much repositories or packages
 		          
-				while (TOO_MUCH_REPOSITS != TRUE) {
+		         while (TOO_MUCH_REPOSITS != TRUE) {
 		          
-					print(paste("log --\ ", package, "\ please precise GitHub repository", sep = ""))
+		            print(paste("log --\ ", package, "\ please precise GitHub repository", sep = ""))
 		               
-					TOO_MUCH_REPOSITS <- TRUE
-				
+		            TOO_MUCH_REPOSITS <- TRUE
+		             
 				}
 		          
-			}
+		    }
 			
 		}
                
@@ -261,7 +264,7 @@ installation_package_BioConductor <- function(package, LOAD_SUCCESS, COMPTEUR_IN
 #installation CRAN
 installation_package_cran <- function(package, LOAD_SUCCESS, COMPTEUR_INSTALLATION) { #takes in charge the installation from BioConductor
 
-	install.packages(package, verbose = FALSE, keep_outputs = TRUE, repos = "https://cloud.r-project.org/")
+	install.packages(package, verbose = FALSE, keep_outputs = FALSE, repos = "https://cloud.r-project.org/")
      
 	LOAD_SUCCESS <- bibliotheque(package, LOAD_SUCCESS) #check success of installation
      
@@ -382,22 +385,43 @@ verification_package <- function(liste, quit_option = "no", st = FALSE) { #check
 
 
 
-installation <- function(quit_option = "no") { #function which manages installation
-    
-    print("PackageR is under GNU licence")
-    
-    print("PackageR : written by Pierre GUYOMARD")
+PackageInstalleR <- function(liste = c(), quit_option = "no") { #function which manages installation
      
-     liste <- as.list(read.delim(file = "installation_input.tsv", header = F, sep = "\t"))
+     print("PackageInstalleR is under GNU licence")
      
-     liste <- liste$V1
+     print("PackageInstalleR : written by Pierre GUYOMARD")
+     
+     if (length(liste) == 0) {
+     
+          presence_input <- FALSE
+     
+          list_installation_input <- list.files()
+     
+          for (k in 1:length(list_installation_input)) {
+          
+               if (list_installation_input[k] == "installation_input.tsv") {
+               
+                    presence_input <- TRUE
+               
+                    liste <- as.list(read.delim(file = "installation_input.tsv", header = F, sep = "\t"))
+               
+                    liste <- liste$V1
+               
+               }
+          
+          }
+    
 
-	verification_package(liste, quit_option)
+          if (presence_input == FALSE) {
+          
+               liste <- readline("Prompt Package List :")
+          
+               liste <- unlist(strsplit(liste, ", "))
+          
+          }
+          
+     }
+     
+     verification_package(liste, quit_option)
 
 }
-
-
-
-
-
-
