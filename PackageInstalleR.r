@@ -99,28 +99,25 @@ disponible <- function(COMPTEUR_INSTALLATION, package) {
      
 }
           
-          
-Rversion <- function() { #return version of R
-     
-	vers <- paste(R.version$major, R.version$minor, sep = ".")
-     
-     	os <- R.version$os
-     
-     	print(paste("log -- Version of R is ", vers, sep = ""))
-     
-     	vers_os <- c(vers, os)
-     
-     	return(vers_os)
-     
-}
+
 
 
 some_tools <- function() { #some tools are required before installing packages. It uses the main script
      
 	print(paste("log -- installing some tools ", sep = ""))
-     
-	tools <- c("githubinstall", "devtools", "BiocManager")
-     
+	
+	if (R.version$os == 'linux-gnu') {
+	
+		tools <- c("BiocManager")
+	
+	}
+	
+	if (R.version$os != 'linux-gnu') {
+	
+		tools <- c("githubinstall", "devtools", "BiocManager")
+	
+	}
+          
 	verification_package(tools, "no", TRUE)
      
 	st <- TRUE
@@ -142,11 +139,11 @@ installation_package_GitHub <- function(package, LOAD_SUCCESS, COMPTEUR_INSTALLA
 	
 	    TOO_MUCH_REPOSITS <- FALSE
      
-	    for (i in 1:length(dispo)) { 
+		for (i in 1:length(dispo)) { 
 		     
-		    if (length(dispo) < 2 & length(reposit) < 2 ) { #if there is not too much repositories and packages
+			if (length(dispo) < 2 & length(reposit) < 2 ) { #if there is not too much repositories and packages
 		     
-                for (k in 1:length(reposit)) { #install all corresponding package
+				for (k in 1:length(reposit)) { #install all corresponding package
 		               
 		            print(paste("log --\ ", package, "\ available on GitHub", sep = ""))
 		               
@@ -154,11 +151,11 @@ installation_package_GitHub <- function(package, LOAD_SUCCESS, COMPTEUR_INSTALLA
 		                    
                     }
 		     
-				}
+			}
 				
 			if (length(dispo) > 2 | length(reposit) > 2) { #if there is too much repositories or packages
 		          
-		         while (TOO_MUCH_REPOSITS != TRUE) {
+				while (TOO_MUCH_REPOSITS != TRUE) {
 		          
 		            print(paste("log --\ ", package, "\ please precise GitHub repository", sep = ""))
 		               
@@ -166,7 +163,7 @@ installation_package_GitHub <- function(package, LOAD_SUCCESS, COMPTEUR_INSTALLA
 		             
 				}
 		          
-		    }
+			}
 			
 		}
                
@@ -236,9 +233,15 @@ installation_package_BioConductor <- function(package, LOAD_SUCCESS, COMPTEUR_IN
 		print(paste("log -- searching ", package, "\ on GitHub", sep = ""))
 		
 		COMPTEUR_INSTALLATION <- "not_BioConductor"
+		
+		SORTIE <- c(LOAD_SUCCESS, COMPTEUR_INSTALLATION)
+		
+		if (R.version$os != 'linux-gnu') {
 			
-		SORTIE <- installation_package_GitHub(package, LOAD_SUCCESS, COMPTEUR_INSTALLATION) #GitHub installation
+			SORTIE <- installation_package_GitHub(package, LOAD_SUCCESS, COMPTEUR_INSTALLATION) #GitHub installation
 
+
+		}
 	}
 	
 	if (LOAD_SUCCESS == TRUE) { #if BioConductor installation did work, leaving installation process
@@ -315,8 +318,6 @@ verification_package <- function(liste, quit_option = "no", st = FALSE) { #check
 	print(paste("log -- starting packages installaton ", sep = ""))
      
 	liste <- sapply(liste, toString)
-	
-	vers <- Rversion
 
 	for (k in 1:length(liste)) { #main loop to look over the list and install package
 	
